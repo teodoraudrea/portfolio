@@ -1,14 +1,23 @@
 ---
-import { getEntryBySlug } from 'astro:content';
-import type { CollectionEntry } from 'astro:content'; // Type-only import
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 
+// Type for blog collection entries
 type BlogEntry = CollectionEntry<'blog'>;
 
-const { slug } = Astro.params;
-const post: BlogEntry | undefined = await getEntryBySlug('blog', slug);
+// Define the `getStaticPaths` function
+export async function getStaticPaths() {
+  const posts: BlogEntry[] = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
 
 if (!post) {
-  throw new Error(`Blog post with slug "${slug}" not found.`);
+  throw new Error(`Blog post with slug "${Astro.params.slug}" not found.`);
 }
 ---
 
@@ -18,7 +27,10 @@ if (!post) {
   </head>
   <body>
     <h1>{post.data.title}</h1>
-    <p><strong>By:</strong> {post.data.author} | <strong>Published:</strong> {post.data.pubDate.toDateString()}</p>
+    <p>
+      <strong>By:</strong> {post.data.author} |
+      <strong>Published:</strong> {post.data.pubDate.toDateString()}
+    </p>
     <article>
       {post.body}
     </article>
