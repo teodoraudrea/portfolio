@@ -1,0 +1,26 @@
+---
+import { getEntryBySlug } from 'astro:content';
+import type { CollectionEntry } from 'astro:content'; // Type-only import
+
+type BlogEntry = CollectionEntry<'blog'>;
+
+const { slug } = Astro.params;
+const post: BlogEntry | undefined = await getEntryBySlug('blog', slug);
+
+if (!post) {
+  throw new Error(`Blog post with slug "${slug}" not found.`);
+}
+---
+
+<html>
+  <head>
+    <title>{post.data.title}</title>
+  </head>
+  <body>
+    <h1>{post.data.title}</h1>
+    <p><strong>By:</strong> {post.data.author} | <strong>Published:</strong> {post.data.pubDate.toDateString()}</p>
+    <article>
+      {post.body}
+    </article>
+  </body>
+</html>

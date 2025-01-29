@@ -1,0 +1,15 @@
+---
+const links = [
+  { href: "/", text: "Home" },
+  { href: "/blogs", text: "Blogs" },
+  { href: "/projects", text: "Projects" },
+];
+---
+
+<nav class="bg-jet text-parchment p-4">
+  <ul class="flex gap-4">
+    {links.map(link => (
+      <li><a href={link.href} class="hover:text-puce">{link.text}</a></li>
+    ))}
+  </ul>
+</nav>
