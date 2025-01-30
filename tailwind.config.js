@@ -4,10 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        fern_green: "#3b6b2a",
-        puce: "#d27a94",
-        parchment: "#f1e8d3",
-        jet: "#393939",
+        uranian_blue: "#a5d8ff",
+        onyx: "#383d3b",
+        yellow: "#f0f600",
+        cornell_red: "#ba1b1d",
+        berkeley_blue: "#1d3557",
       },
     },
   },

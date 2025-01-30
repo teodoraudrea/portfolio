@@ -1,5 +1,6 @@
 ---
 import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <html lang="en">
@@ -8,10 +9,11 @@ import Navbar from "../components/Navbar.astro";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Teodora's Portfolio</title>
   </head>
-  <body class="bg-parchment text-jet">
+  <body class="grid-cols-1 gap-4">
     <Navbar />
-    <main class="p-8">
+    <main class="px-20 py-8">
       <slot />
     </main>
+    <Footer/>
   </body>
 </html>

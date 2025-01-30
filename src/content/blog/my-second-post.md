@@ -7,4 +7,4 @@ author: "Teodora"
 
 # Welcome to My Blog
 
-This is my first post using Astro! I’m so excited to share my thoughts and projects here. 🚀
+This is my second post using Astro! I’m so excited to share my thoughts and projects here. 🚀

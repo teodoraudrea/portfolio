@@ -6,10 +6,16 @@ const links = [
 ];
 ---
 
-<nav class="bg-jet text-parchment p-4">
-  <ul class="flex gap-4">
-    {links.map(link => (
-      <li><a href={link.href} class="hover:text-puce">{link.text}</a></li>
-    ))}
-  </ul>
+<nav class="bg-berkeley_blue text-white text-xl p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Navbar Links (Left) -->
+    <ul class="flex gap-6">
+      {links.map(link => (
+        <li><a href={link.href} class="hover:text-yellow">{link.text}</a></li>
+      ))}
+    </ul>
+
+    <!-- Logo (Right) -->
+    <a href="/" class="text-2xl font-bold">Teodora</a>
+  </div>
 </nav>
