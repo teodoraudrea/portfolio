@@ -20,11 +20,18 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/x-icon" href="/favicon-teo.ico" />
 <link rel="sitemap" href="/sitemap-index.xml" />
+<!-- RSS Feeds -->
 <link
 	rel="alternate"
 	type="application/rss+xml"
-	title={SITE_TITLE}
-	href={new URL('rss.xml', Astro.site)}
+	title="Blog RSS Feed"
+	href={new URL('rss-blog.xml', Astro.site)}
+/>
+<link
+	rel="alternate"
+	type="application/rss+xml"
+	title="Projects RSS Feed"
+	href={new URL('rss-projects.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
