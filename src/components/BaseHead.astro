@@ -2,7 +2,14 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-import { SITE_TITLE } from '../consts';
+import {
+	SITE_AUTHOR,
+	SITE_EMAIL,
+	SITE_LINKEDIN,
+	SITE_LOCATION,
+	SITE_PHONE,
+	SITE_TITLE,
+} from '../consts';
 
 interface Props {
 	title: string;
@@ -10,9 +17,37 @@ interface Props {
 	image?: string;
 }
 
+const { title, description, image = '/1767283493700.jpeg' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const siteUrl = Astro.site?.toString() ?? canonicalURL.toString();
+const structuredData = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		name: SITE_AUTHOR,
+		url: siteUrl,
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		name: SITE_AUTHOR,
+		jobTitle: 'Web Developer',
+		url: siteUrl,
+		email: SITE_EMAIL,
+		telephone: SITE_PHONE,
+		address: SITE_LOCATION,
+		sameAs: [SITE_LINKEDIN],
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		name: title,
+		description,
+		url: canonicalURL.toString(),
+		isPartOf: { '@type': 'WebSite', name: SITE_AUTHOR, url: siteUrl },
+		about: { '@type': 'Person', name: SITE_AUTHOR },
+	},
+];
 ---
 
 <!-- Global Metadata -->
@@ -46,13 +81,19 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+<meta name="author" content={SITE_AUTHOR} />
+<meta name="robots" content="index,follow" />
+<meta name="theme-color" content="#1d4ed8" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
+<meta property="og:site_name" content={SITE_AUTHOR} />
+<meta property="og:locale" content="en_GB" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
+<meta property="og:image:alt" content={title} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
@@ -60,3 +101,5 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<script type="application/ld+json">{JSON.stringify(structuredData)}</script>

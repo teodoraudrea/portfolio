@@ -2,54 +2,312 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import  SpeedInsights  from "@vercel/speed-insights/astro"
-import Analytics from '@vercel/analytics/astro'
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import SpeedInsights from '@vercel/speed-insights/astro';
+import Analytics from '@vercel/analytics/astro';
+import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const featuredProjects = projects.slice(0, 3);
 
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={SITE_AUTHOR} description={SITE_DESCRIPTION} />
+		<style>
+			.home {
+				display: flex;
+				flex-direction: column;
+				gap: 4rem;
+			}
+			.hero {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+				gap: 2.5rem;
+				align-items: center;
+			}
+			.hero-copy h1 {
+				font-size: clamp(2.25rem, 4vw, 3.5rem);
+				margin-bottom: 0.75rem;
+			}
+			.hero-title-row {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+			}
+			.hero-headshot-wrap {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 96px;
+				height: 96px;
+				flex: 0 0 auto;
+			}
+			.hero-headshot {
+				display: none;
+				width: 64px;
+				height: 64px;
+				border-radius: 50%;
+				object-fit: cover;
+				box-shadow: var(--box-shadow);
+			}
+			.eyebrow {
+				text-transform: uppercase;
+				letter-spacing: 0.2em;
+				font-size: 0.75rem;
+				color: rgb(var(--gray));
+				margin-bottom: 0.75rem;
+			}
+			.lede {
+				font-size: 1.125rem;
+				max-width: 32rem;
+			}
+			.hero-actions {
+				display: flex;
+				gap: 1rem;
+				flex-wrap: wrap;
+				margin-top: 1.5rem;
+				width: 100%;
+			}
+			.button {
+				padding: 0.75rem 1.5rem;
+				border-radius: 999px;
+				font-weight: 600;
+				border: 1px solid transparent;
+				text-decoration: none;
+				transition: 0.2s ease;
+				box-sizing: border-box;
+			}
+			.button.primary {
+				background: var(--accent);
+				color: white;
+			}
+			.button.primary:hover {
+				background: var(--accent-dark);
+			}
+			.button.ghost {
+				border-color: rgba(var(--gray), 0.4);
+				color: rgb(var(--gray-dark));
+			}
+			.hero-media img {
+				width: 320px;
+				height: 320px;
+				object-fit: cover;
+				border-radius: 50%;
+				box-shadow: 0 0 0 8px rgba(29, 78, 216, 0.08), 0 0 30px rgba(29, 78, 216, 0.25);
+			}
+			.hero-media {
+				display: flex;
+				justify-content: center;
+			}
+			.summary {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+				gap: 2rem;
+				padding: 2rem;
+				border-radius: 20px;
+				background: white;
+				box-shadow: var(--box-shadow);
+			}
+			.section-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+				margin-bottom: 1.5rem;
+			}
+			.experience {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+				gap: 1.5rem;
+			}
+			.experience-card {
+				padding: 1.5rem;
+				border-radius: 16px;
+				background: white;
+				border: 1px solid rgba(var(--gray-light), 0.9);
+				box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+			}
+			.experience-card h3 {
+				margin-bottom: 0.25rem;
+			}
+			.experience-card p {
+				margin: 0.35rem 0 0 0;
+				color: rgb(var(--gray));
+			}
+			.text-link {
+				font-weight: 600;
+				text-decoration: none;
+				color: var(--accent);
+			}
+			.card-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+				gap: 1.5rem;
+			}
+			.card {
+				padding: 1.5rem;
+				border-radius: 16px;
+				border: 1px solid rgba(var(--gray-light), 0.9);
+				background: white;
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+				box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+			}
+			.card img {
+				border-radius: 12px;
+				max-height: 180px;
+				object-fit: cover;
+			}
+			.card h3 {
+				margin: 0;
+			}
+			@media (max-width: 720px) {
+				.hero-title-row {
+					justify-content: space-between;
+					align-items: center;
+				}
+				.hero-headshot-wrap {
+					width: 110px;
+					height: 110px;
+				}
+				.hero-headshot {
+					display: block;
+					width: 88px;
+					height: 88px;
+				}
+				.hero-media {
+					display: none;
+				}
+				.summary {
+					padding: 1.5rem;
+				}
+				.hero-actions {
+					flex-direction: column;
+					align-items: flex-start;
+				}
+				.button {
+					width: 100%;
+					text-align: center;
+				}
+			}
+		</style>
 	</head>
-	<>
+	<body>
 		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+		<main class="home">
+			<section class="hero">
+				<div class="hero-copy">
+					<p class="eyebrow">Portfolio</p>
+					<div class="hero-title-row">
+						<h1>{SITE_AUTHOR}</h1>
+						<div class="hero-headshot-wrap">
+							<img
+								class="hero-headshot"
+								width={176}
+								height={176}
+								src="/1767283493700.jpeg"
+								alt="Portrait"
+								loading="eager"
+							/>
+						</div>
+					</div>
+					<p class="lede">
+						Web Developer at the University of St Andrews, previously Integration Developer at
+						IntegrationWorks. I build web experiences with a focus on clarity, performance, and
+						maintainability.
+					</p>
+					<div class="hero-actions">
+						<a class="button primary" href="/projects">View projects</a>
+						<a class="button ghost" href="/about">About me</a>
+					</div>
+				</div>
+				<div class="hero-media">
+					<img
+						width={720}
+						height={540}
+						src="/1767283493700.jpeg"
+						alt="Portrait"
+						loading="eager"
+					/>
+				</div>
+			</section>
+
+			<section class="summary">
+				<div>
+					<h2>What I do</h2>
+					<p>
+						I build modern, content-driven sites and product experiences, often bridging
+						stakeholders and engineering teams to ship usable, accessible solutions.
+					</p>
+				</div>
+				<div>
+					<h2>How I work</h2>
+					<p>
+						I combine hands-on delivery with clear documentation, governance, and testing
+						practices to keep projects resilient and easy to maintain.
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<div class="section-header">
+					<h2>Experience</h2>
+					<a class="text-link" href="/about">Full timeline</a>
+				</div>
+				<div class="experience">
+					<article class="experience-card">
+						<h3>Web Developer</h3>
+						<span>University of St Andrews</span>
+						<p>Jun 2023 – present</p>
+					</article>
+					<article class="experience-card">
+						<h3>Integration Developer</h3>
+						<span>IntegrationWorks</span>
+						<p>Jul 2021 – Jun 2023</p>
+					</article>
+					<article class="experience-card">
+						<h3>Frontend Developer (Intern)</h3>
+						<span>CertifyMe</span>
+						<p>Apr 2021 – Jul 2021</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="featured">
+				<div class="section-header">
+					<h2>Selected projects</h2>
+					<a class="text-link" href="/projects">All projects</a>
+				</div>
+				<div class="card-grid">
+					{
+						featuredProjects.map((project) => (
+							<article class="card">
+								{project.data.heroImage && (
+									<img
+										width={640}
+										height={360}
+										src={project.data.heroImage}
+										alt=""
+									/>
+								)}
+								<h3>{project.data.title}</h3>
+								<p>{project.data.description}</p>
+								<a class="text-link" href={`/projects/${project.id}/`}>View case study</a>
+							</article>
+						))
+					}
+				</div>
+			</section>
 		</main>
 		<Footer />
-		<SpeedInsights/>
-		<Analytics/>
+		<SpeedInsights />
+		<Analytics />
 	</body>
 </html>
