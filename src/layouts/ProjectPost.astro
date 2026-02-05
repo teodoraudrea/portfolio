@@ -20,7 +20,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				margin: 0;
 			}
 			.hero-image {
-				width: 100%;
+				width: 80vw;
+				max-width: min(1920px, calc(100% - 2em));
 			}
 			.hero-image img {
 				display: block;
@@ -28,19 +29,20 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				border-radius: 12px;
 				box-shadow: var(--box-shadow);
 				max-height: 360px;
-				width: 100%;
+				width: 80vw;
+				max-width: 1920px;
 				object-fit: cover;
 			}
 			.prose {
-				width: 90vw;
-				max-width: calc(100% - 2em);
+				width: 80vw;
+				max-width: min(1920px, calc(100% - 2em));
 				margin: auto;
 				padding: 1em;
 				color: rgb(var(--gray-dark));
 			}
 			.title {
 				margin-bottom: 1em;
-				padding: 1em 0;
+				padding: 0em;
 				text-align: center;
 				line-height: 1;
 			}
