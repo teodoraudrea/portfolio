@@ -18,6 +18,7 @@ interface Props {
 }
 
 const { title, description, image = '/1767283493700.jpeg' } = Astro.props;
+const enablePagefind = import.meta.env.PROD;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const siteUrl = Astro.site?.toString() ?? canonicalURL.toString();
 const structuredData = [
@@ -73,6 +74,9 @@ const structuredData = [
 <!-- Font preloads -->
 <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
 <link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+
+{enablePagefind && <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />}
+{enablePagefind && <script src="/pagefind/pagefind-ui.js" defer></script>}
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
